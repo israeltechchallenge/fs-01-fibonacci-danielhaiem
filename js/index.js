@@ -1,8 +1,16 @@
 const fibTextEl = document.getElementById("fib-text-el");
+const inputEl = document.getElementById("input-el");
+const calcBtn = document.getElementById("calc-btn");
 
-let fib = [0, 1];
+// let fib = [0, 1];
 
-function getFibText(num) {
+calcBtn.addEventListener("click", function () {
+  let userInput = inputEl.value;
+  calcFib(userInput);
+});
+
+function calcFib(num) {
+  let fib = [0, 1];
   for (let i = fib.length; i < num; i++) {
     fib[i] = fib[i - 2] + fib[i - 1];
   }
@@ -11,7 +19,7 @@ function getFibText(num) {
 
   let result = "";
 
-  if (num < 2) {
+  if (num < 1) {
     result = 0;
   } else {
     result = last2.reduce(
@@ -20,8 +28,6 @@ function getFibText(num) {
     );
   }
 
-  let fibText = `The Fibonacci of ${num} is ${result}`;
+  let fibText = result;
   fibTextEl.innerText = fibText;
 }
-
-getFibText(19);
