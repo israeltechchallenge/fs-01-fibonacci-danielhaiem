@@ -1,3 +1,22 @@
+* {
+  font-family: "Open Sans", sans-serif;
+}
+
 .input-width {
   max-width: 75px;
 }
+
+.input-width {
+  max-width: 75px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button,
+input[type="number"] {
+  -webkit-appearance: none;
+  margin: 0;
+  -moz-appearance: textfield;
+}
+
+/* -font color
+    -font-family */
