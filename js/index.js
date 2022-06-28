@@ -6,6 +6,7 @@ const spinner1El = document.querySelector("#spinner1-el");
 const spinner2El = document.querySelector("#spinner2-el");
 const renderResult = document.getElementById("render-result");
 const over50 = document.getElementById("over50");
+const checkbox = document.getElementById("flexCheckDefault");
 
 const FIB_URL = "http://localhost:5050/fibonacci/";
 const RENDER_URL = "http://localhost:5050/getFibonacciResults";
@@ -15,6 +16,10 @@ const over50Error = `<p class="fs-6 d-inline">Can’t be larger than 50</p>`;
 function error50Add() {
   over50.classList.remove("d-none");
   over50.innerHTML = over50Error;
+}
+
+function error50Remove() {
+  over50.classList.add("d-none");
 }
 
 function spinner1On() {
@@ -66,22 +71,42 @@ calcBtn.addEventListener("click", function (e) {
   if (!userInput) {
     dangerRemove();
     return false;
-  } else if (userInput < 1) {
-    invalidAdd();
-    dangerAdd();
-  } else if (userInput > 50) {
-    invalidAdd();
-    dangerAdd();
-    error50Add();
+  } else if (checkbox.checked == true) {
+    if (userInput < 0) {
+      invalidAdd();
+      dangerAdd();
+      error50Remove();
+    } else if (userInput > 50) {
+      invalidAdd();
+      dangerAdd();
+      error50Add();
+    } else {
+      dangerRemove();
+      invalidRemove();
+      calcFibServer(userInput);
+      renderFib();
+    }
   } else {
-    dangerRemove();
-    invalidRemove();
-    calcFib(userInput);
-    renderFib();
+    if (userInput < 0) {
+      invalidAdd();
+      dangerAdd();
+      error50Remove();
+      errorCssRemove();
+    } else if (userInput > 50) {
+      invalidAdd();
+      dangerAdd();
+      error50Add();
+      errorCssRemove();
+    } else {
+      dangerRemove();
+      invalidRemove();
+      errorCssRemove();
+      calcFibManual(userInput);
+    }
   }
 });
 
-function calcFib(num) {
+function calcFibServer(num) {
   spinner1Off();
 
   fetch(`${FIB_URL}${num}`)
@@ -110,6 +135,29 @@ function calcFib(num) {
       resultBsAdd();
       fibTextEl.innerText = data.result;
     });
+}
+
+function calcFibManual(num) {
+  let fib = [0, 1];
+  for (let i = fib.length; i < num; i++) {
+    fib[i] = fib[i - 2] + fib[i - 1];
+  }
+
+  let last2 = fib.slice(-2);
+
+  let result = "";
+
+  if (num < 1) {
+    result = 0;
+  } else {
+    result = last2.reduce(
+      (previousValue, currentValue) => previousValue + currentValue,
+      0
+    );
+  }
+  resultBsAdd();
+  let fibText = result;
+  fibTextEl.innerText = fibText;
 }
 
 function renderFib() {
